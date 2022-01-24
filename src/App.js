@@ -22,9 +22,23 @@ class App extends Component {
     }));
   };
 
-  // formSubmitHandler = data => {
-  //   console.log(data);
-  // };
+  componentDidMount() {
+    const contactsInLocalStorage = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contactsInLocalStorage);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const nextContacts = this.state.contacts;
+    const prevContacts = prevState.contacts;
+
+    if (nextContacts !== prevContacts) {
+      localStorage.setItem('contacts', JSON.stringify(nextContacts));
+    }
+  }
 
   addContact = ({ name, number }) => {
     const foundNames = this.state.contacts.map(contact =>
